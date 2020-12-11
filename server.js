@@ -24,5 +24,10 @@ require('./app/routes.js')(app);
 
 // To Make app listen at particular port
 app.listen(port, serverName, function () {
+    console.log("host: " + database.host + 
+                " port: " + database.port + 
+                " db: " + database.name + 
+                " username: " + database.user + 
+                " schema: " + database.schema );
     console.log("Server is running on "+ port +" port");
 });
