@@ -7,11 +7,10 @@ const schemaName=database.schema;
 const { Pool } = require('pg')
 
 var pooldict;
-if(database.port != ''){
+if(database.port == '0000'){
     pooldict = {
         host: database.host,
         database: database.name,
-        port: database.port,
         user: database.user,
         password: database.password
     };
@@ -19,6 +18,7 @@ if(database.port != ''){
 else {
     pooldict = {
         host: database.host,
+        port: database.port,
         database: database.name,
         user: database.user,
         password: database.password
