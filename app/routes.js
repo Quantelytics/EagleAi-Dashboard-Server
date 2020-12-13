@@ -5,13 +5,27 @@ var async = require("async");
 var database = require('../config/database');
 const schemaName=database.schema;
 const { Pool } = require('pg')
-const pool = new Pool({
-    host: database.host,
-    database: database.name,
-    port: database.port,
-    user: database.user,
-    password: database.password
-})
+
+var pooldict;
+if(database.port != ''){
+    pooldict = {
+        host: database.host,
+        database: database.name,
+        port: database.port,
+        user: database.user,
+        password: database.password
+    };
+}
+else {
+    pooldict = {
+        host: database.host,
+        database: database.name,
+        user: database.user,
+        password: database.password
+    };
+};
+
+const pool = new Pool(pooldict);
 
 var PropertiesReader = require('properties-reader');
 var properties = PropertiesReader('server.properties');
