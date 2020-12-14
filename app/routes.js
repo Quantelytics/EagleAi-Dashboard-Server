@@ -55,17 +55,18 @@ module.exports = function (app) {
         res.setHeader('Content-Type', 'application/json');
         let start = new Date();
         var sql = "select row_to_json("+schemaName+".get_rootmodellist())";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of roots list is "+Math.abs((end.getTime() - start.getTime())/1000));
+            console.log("Time taken for execution of roots list is "+Math.abs((end.getTime() - start.getTime())/1000));
             if(err)
             { 
                 logger.error(sql+'==>'+err );
             } 
             res.send(json);
         });
+        console.log ("I am back!");
     })
 
     /* Get model modelhierarchy.*/
@@ -73,11 +74,11 @@ module.exports = function (app) {
         let start = new Date();
         res.setHeader('Content-Type', 'application/json');
         var sql = "select row_to_json( a1) from "+schemaName+".modelhierarchy a1 order by rank";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of model outputs is "+Math.abs((end.getTime() - start.getTime())/1000)) 
+            console.log("Time taken for execution of model outputs is "+Math.abs((end.getTime() - start.getTime())/1000)) 
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -90,11 +91,11 @@ module.exports = function (app) {
         let start = new Date();
         res.setHeader('Content-Type', 'application/json');
         var sql = "select row_to_json("+schemaName+".get_modelgroupbys())";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of model groupbys is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of model groupbys is "+Math.abs((end.getTime() - start.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -114,11 +115,11 @@ module.exports = function (app) {
             filter="'"+filter+"'";
         }
         var sql = "select row_to_json("+schemaName+".get_issuetypes("+filter+"))";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql , (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of get issues by "+filter+" "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of get issues by "+filter+" "+Math.abs((end.getTime() - start.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -151,12 +152,12 @@ module.exports = function (app) {
             dateFilter="'"+dateFilter+"'";
         }
         var root=req.params.root;
-        var sql = "select row_to_json("+schemaName+".get_tsdata("+type+","+ filter+","+issue+","+lastRead+","+dateFilter+",'"+root+"'))";logger.debug("QUERY: "+sql);
+        var sql = "select row_to_json("+schemaName+".get_tsdata("+type+","+ filter+","+issue+","+lastRead+","+dateFilter+",'"+root+"'))";console.log("QUERY: "+sql);
 
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of Time Series of "+filter+" is "+Math.abs((end.getTime() - start.getTime())/1000));
+            console.log("Time taken for execution of Time Series of "+filter+" is "+Math.abs((end.getTime() - start.getTime())/1000));
             if(err)
             { 
             logger.error(sql+'==>'+err );
@@ -194,11 +195,11 @@ module.exports = function (app) {
             endTime="'"+endTime+"'";
         }
         var sql = "select row_to_json("+schemaName+".get_orders_history("+root+","+filterType+","+filterValue+","+issue+","+startTime+","+endTime+"))";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let e=new Date();
-            logger.debug("Time taken for orders history execution "+Math.abs((e.getTime() - s.getTime())/1000))
+            console.log("Time taken for orders history execution "+Math.abs((e.getTime() - s.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -212,11 +213,11 @@ module.exports = function (app) {
         let start = new Date();
         res.setHeader('Content-Type', 'application/json');
         var sql = "select ("+schemaName+".get_modelparticipationdetailfields())";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql , (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of getParticipationdetailfield "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of getParticipationdetailfield "+Math.abs((end.getTime() - start.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -259,11 +260,11 @@ module.exports = function (app) {
         }
         var sql = "select row_to_json("+schemaName+".get_participation_details(rootfilter=>"+root+",dtype=>"+filterType+",dfilter=>"+filterValue+",agg_type=>"+aggType+",groupbyfilter=>"+issue+",start_time=>"+startTime+",end_time=>"+endTime+"))";
         //var sql = "select row_to_json("+schemaName+".get_participation_details("+root+","+filterType+","+filterValue+","+aggType+","+issue+","+startTime+","+endTime+"))"; 
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql , (err, response) => {
             var json=formatJson(response);
             let e=new Date();
-            logger.debug("Time taken for participation details "+Math.abs((e.getTime() - s.getTime())/1000))
+            console.log("Time taken for participation details "+Math.abs((e.getTime() - s.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -280,11 +281,11 @@ module.exports = function (app) {
         } 
         let s = new Date()
         var sql = "select row_to_json("+schemaName+".get_scatterdata('"+modelfeature+"',groupbyfilter=>"+issuetype+"))";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let e=new Date();
-            logger.debug("Time taken for "+modelfeature+" execution "+Math.abs((e.getTime() - s.getTime())/1000))
+            console.log("Time taken for "+modelfeature+" execution "+Math.abs((e.getTime() - s.getTime())/1000))
             if(err)
             { 
             logger.error(sql+'==>'+err );
@@ -297,11 +298,11 @@ module.exports = function (app) {
         var rootValue=req.params.rootValue;
         let s = new Date()
         var sql = "select row_to_json("+schemaName+".get_clusterdata(rootvalue => '"+rootValue+"',targettype=>'ALPHA'))";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let e=new Date();
-            logger.debug("Time taken for get_clusterdata execution "+Math.abs((e.getTime() - s.getTime())/1000))
+            console.log("Time taken for get_clusterdata execution "+Math.abs((e.getTime() - s.getTime())/1000))
             if(err)
             { 
             logger.error(sql+'==>'+err );
@@ -321,11 +322,11 @@ module.exports = function (app) {
         }
 
         var sql = "select row_to_json("+schemaName+".get_modelvalues ('"+rootValue+"','"+modelValue+"'))";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of  modelvalues list is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of  modelvalues list is "+Math.abs((end.getTime() - start.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -359,12 +360,12 @@ module.exports = function (app) {
             root="'"+root+"'";
         }
         var sql = "select row_to_json("+schemaName+".get_aggtotals_eod(datatype=>"+type+",datafilter=>"+filter+",groupbyfilter=>"+issue+",rootvalue=>"+root+"))";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         let s = new Date();
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let e=new Date();
-            logger.debug("Time taken for Trend Analysis "+type+": "+filter+"  execution "+Math.abs((e.getTime() - s.getTime())/1000))
+            console.log("Time taken for Trend Analysis "+type+": "+filter+"  execution "+Math.abs((e.getTime() - s.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -393,12 +394,12 @@ module.exports = function (app) {
             root="'"+root+"'";
         }
         var sql = "select row_to_json("+schemaName+".get_aggtotals_piedata(datatype=>"+type+",datafilter=>"+filter+",rootvalue=>"+root+"))";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         let s = new Date();
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let e=new Date();
-            logger.debug("Time taken for Trend Analysis Pie Data"+type+": "+filter+"  execution "+Math.abs((e.getTime() - s.getTime())/1000))
+            console.log("Time taken for Trend Analysis Pie Data"+type+": "+filter+"  execution "+Math.abs((e.getTime() - s.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -428,7 +429,7 @@ module.exports = function (app) {
         }else{
             var sql = "select row_to_json("+schemaName+".get_"+charttype+"data('"+type+"',rootvalue=>'"+filter+"',groupbyfilter=>"+groupby+"))";
         }
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         let s = new Date();
         pool.query(sql, (err, response) => {
             if(targetType!='NULL'){
@@ -439,7 +440,7 @@ module.exports = function (app) {
             var json={};
             json={"id":id,"data":formatJson(response)};
             let e=new Date();
-            logger.debug("Time taken for "+type+": "+filter+"  execution "+Math.abs((e.getTime() - s.getTime())/1000))
+            console.log("Time taken for "+type+": "+filter+"  execution "+Math.abs((e.getTime() - s.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -452,11 +453,11 @@ module.exports = function (app) {
         let start = new Date();
         res.setHeader('Content-Type', 'application/json');
         var sql = "select row_to_json("+schemaName+".get_modelcharts())";
-        logger.debug("QUERY: "+sql);
+        console.log("QUERY: "+sql);
         pool.query(sql, (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of model charts is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of model charts is "+Math.abs((end.getTime() - start.getTime())/1000))
             if(err)
             { 
                 logger.error(sql+'==>'+err );
@@ -473,7 +474,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_desks(NULL))", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of divisions list is "+Math.abs((end.getTime() - start.getTime())/1000));
+            console.log("Time taken for execution of divisions list is "+Math.abs((end.getTime() - start.getTime())/1000));
             res.send(json);
         });
     })
@@ -500,7 +501,7 @@ module.exports = function (app) {
         var finRes=[];
         async.series({
             tsData: function(callback){
-                logger.debug("select row_to_json("+schemaName+".get_tsdata('DIVISION',"+filter+","+issue+","+lastRead+","+dateFilter+"))");
+                console.log("select row_to_json("+schemaName+".get_tsdata('DIVISION',"+filter+","+issue+","+lastRead+","+dateFilter+"))");
                 let s = new Date();
                 pool.query("select row_to_json("+schemaName+".get_tsdata('DIVISION',"+filter+","+issue+","+lastRead+","+dateFilter+"))", (err, response) => {
                     var json=formatJson(response);
@@ -508,12 +509,12 @@ module.exports = function (app) {
                         return item.division==req.params.filter;
                     });
                     let e=new Date();
-                    logger.debug("Time taken for "+filter+" tsData execution "+Math.abs((e.getTime() - s.getTime())/1000))
+                    console.log("Time taken for "+filter+" tsData execution "+Math.abs((e.getTime() - s.getTime())/1000))
                     callback(null, filtered);
                 });
             },
             ClientData: function(callback){
-                logger.debug("select row_to_json("+schemaName+".get_scatterdata('CLIENT',"+issue+","+lastRead+","+dateFilter+"))");
+                console.log("select row_to_json("+schemaName+".get_scatterdata('CLIENT',"+issue+","+lastRead+","+dateFilter+"))");
                 let s = new Date();
                 pool.query("select row_to_json("+schemaName+".get_scatterdata('CLIENT',"+issue+","+lastRead+","+dateFilter+"))", (err, response) => {
                     var json=formatJson(response);
@@ -522,12 +523,12 @@ module.exports = function (app) {
                         return item.division==req.params.filter;
                     });
                     let e=new Date();
-                    logger.debug("Time taken for "+filter+" ClientData execution "+Math.abs((e.getTime() - s.getTime())/1000))
+                    console.log("Time taken for "+filter+" ClientData execution "+Math.abs((e.getTime() - s.getTime())/1000))
                     callback(null, filtered);
                 });
             },
             SymbolData: function(callback){
-                logger.debug("select row_to_json("+schemaName+".get_scatterdata('SYMBOL',"+issue+","+lastRead+","+dateFilter+"))");
+                console.log("select row_to_json("+schemaName+".get_scatterdata('SYMBOL',"+issue+","+lastRead+","+dateFilter+"))");
                 let s = new Date();
                 pool.query("select row_to_json("+schemaName+".get_scatterdata('SYMBOL',"+issue+","+lastRead+","+dateFilter+"))", (err, response) => {
                     var json=formatJson(response);
@@ -535,12 +536,12 @@ module.exports = function (app) {
                         return item.division==req.params.filter;
                     });
                     let e=new Date();
-                    logger.debug("Time taken for "+filter+" SymbolData execution "+Math.abs((e.getTime() - s.getTime())/1000))
+                    console.log("Time taken for "+filter+" SymbolData execution "+Math.abs((e.getTime() - s.getTime())/1000))
                     callback(null, filtered);
                 });
             },
             TRADER: function(callback){
-                logger.debug("select row_to_json("+schemaName+".get_heatmapdata('TRADER',"+ issue+","+lastRead+","+dateFilter+"))");
+                console.log("select row_to_json("+schemaName+".get_heatmapdata('TRADER',"+ issue+","+lastRead+","+dateFilter+"))");
                 let s = new Date();
                 pool.query("select row_to_json("+schemaName+".get_heatmapdata('TRADER',"+ issue+","+lastRead+","+dateFilter+"))", (err, response) => {
                     var json=formatJson(response);
@@ -548,12 +549,12 @@ module.exports = function (app) {
                         return item.division==req.params.filter;
                     });
                     let e=new Date();
-                    logger.debug("Time taken for "+filter+" TRADER execution "+Math.abs((e.getTime() - s.getTime())/1000))
+                    console.log("Time taken for "+filter+" TRADER execution "+Math.abs((e.getTime() - s.getTime())/1000))
                     callback(null, filtered);
                 });
             },
             OMPROCESS: function(callback){
-                logger.debug("select row_to_json("+schemaName+".get_heatmapdata('OMPROCESS',"+ issue+","+lastRead+","+dateFilter+"))");
+                console.log("select row_to_json("+schemaName+".get_heatmapdata('OMPROCESS',"+ issue+","+lastRead+","+dateFilter+"))");
                 let s = new Date();
                 pool.query("select row_to_json("+schemaName+".get_heatmapdata('OMPROCESS',"+ issue+","+lastRead+","+dateFilter+"))", (err, response) => {
                     var json=formatJson(response);
@@ -561,12 +562,12 @@ module.exports = function (app) {
                         return item.division==req.params.filter;
                     });
                     let e=new Date();
-                    logger.debug("Time taken for "+filter+" OMPROCESS execution "+Math.abs((e.getTime() - s.getTime())/1000))
+                    console.log("Time taken for "+filter+" OMPROCESS execution "+Math.abs((e.getTime() - s.getTime())/1000))
                     callback(null, filtered);
                 });
             },
             Outlier: function(callback){
-                logger.debug("select row_to_json("+schemaName+".get_singleorder_outlierdata("+issue+","+lastRead+","+filter+"))");
+                console.log("select row_to_json("+schemaName+".get_singleorder_outlierdata("+issue+","+lastRead+","+filter+"))");
                 let s = new Date();
                 pool.query("select row_to_json("+schemaName+".get_singleorder_outlierdata("+issue+","+lastRead+","+filter+"))", (err, response) => {
                     var json=formatJson(response);
@@ -574,12 +575,12 @@ module.exports = function (app) {
                         return item.division==req.params.filter;
                     });
                     let e=new Date();
-                    logger.debug("Time taken for "+filter+" Outlier execution "+Math.abs((e.getTime() - s.getTime())/1000))
+                    console.log("Time taken for "+filter+" Outlier execution "+Math.abs((e.getTime() - s.getTime())/1000))
                     callback(null, filtered);
                 });
             },
             Bar: function(callback){
-                logger.debug("select row_to_json("+schemaName+".get_barchartdata('DESK',"+ issue+","+lastRead+"))");
+                console.log("select row_to_json("+schemaName+".get_barchartdata('DESK',"+ issue+","+lastRead+"))");
                 let s = new Date();
                 pool.query("select row_to_json("+schemaName+".get_barchartdata('DESK',"+ issue+","+lastRead+"))", (err, response) => {
                     var json=formatJson(response);
@@ -587,14 +588,14 @@ module.exports = function (app) {
                         return item.division==req.params.filter;
                     });
                     let e=new Date();
-                    logger.debug("Time taken for "+filter+" Bar execution "+Math.abs((e.getTime() - s.getTime())/1000))
+                    console.log("Time taken for "+filter+" Bar execution "+Math.abs((e.getTime() - s.getTime())/1000))
                     callback(null, filtered);
                 });
             }
         },
         function(err, results) {
             let end=new Date();
-            logger.debug("Time taken for execution of "+filter+" is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of "+filter+" is "+Math.abs((end.getTime() - start.getTime())/1000))
            res.send(results);
         });
 
@@ -606,7 +607,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_regnms_agg_data())", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -617,7 +618,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_shortsell_client_agg_data())", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -628,7 +629,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_shortsell_symbol_agg_data())", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -639,7 +640,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_mar_agg_data())", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -650,7 +651,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_locate_anomaly_data())", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -661,7 +662,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_ordercapacity_anomaly_data())", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -673,7 +674,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_spoofingincidents('2019-03-29'))", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -682,11 +683,11 @@ module.exports = function (app) {
         let start = new Date();
         res.setHeader('Content-Type', 'application/json');
         var d = new Date().toISOString().split('T')[0];
-        logger.debug("select row_to_json("+schemaName+".get_frontrunningincidents('"+d+"'))");
+        console.log("select row_to_json("+schemaName+".get_frontrunningincidents('"+d+"'))");
         pool.query("select row_to_json("+schemaName+".get_frontrunningincidents('2019-3-29'))", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of REG NMS is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -697,7 +698,7 @@ module.exports = function (app) {
         pool.query("select "+schemaName+".get_model_inputs()", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of model inputs is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of model inputs is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
@@ -708,7 +709,7 @@ module.exports = function (app) {
         pool.query("select row_to_json("+schemaName+".get_model_outputs())", (err, response) => {
             var json=formatJson(response);
             let end=new Date();
-            logger.debug("Time taken for execution of model outputs is "+Math.abs((end.getTime() - start.getTime())/1000))
+            console.log("Time taken for execution of model outputs is "+Math.abs((end.getTime() - start.getTime())/1000))
             res.send(json);
         });
     })
