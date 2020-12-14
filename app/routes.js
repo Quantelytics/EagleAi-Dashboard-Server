@@ -12,7 +12,10 @@ if(database.port == '0000'){
         host: database.host,
         database: database.name,
         user: database.user,
-        password: database.password
+        password: database.password,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000
     };
 }
 else {
@@ -21,7 +24,10 @@ else {
         port: database.port,
         database: database.name,
         user: database.user,
-        password: database.password
+        password: database.password,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000
     };
 };
 
@@ -56,15 +62,20 @@ module.exports = function (app) {
         let start = new Date();
         var sql = "select row_to_json("+schemaName+".get_rootmodellist())";
         console.log("QUERY: "+sql);
-        pool.query(sql, (err, response) => {
-            var json=formatJson(response);
-            let end=new Date();
-            console.log("Time taken for execution of roots list is "+Math.abs((end.getTime() - start.getTime())/1000));
-            if(err)
-            { 
-                logger.error(sql+'==>'+err );
-            } 
-            res.send(json);
+        pool.connect((err, client, release) => {
+            if (err) {
+              return console.error('Error acquiring client', err.stack)
+            }
+            pool.query(sql, (err, response) => {
+                var json=formatJson(response);
+                let end=new Date();
+                console.log("Time taken for execution of roots list is "+Math.abs((end.getTime() - start.getTime())/1000));
+                if(err)
+                { 
+                    logger.error(sql+'==>'+err );
+                } 
+                res.send(json);
+            }
         });
         console.log ("I am back!");
     })
