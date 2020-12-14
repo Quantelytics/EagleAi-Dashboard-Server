@@ -75,7 +75,7 @@ module.exports = function (app) {
                     logger.error(sql+'==>'+err );
                 } 
                 res.send(json);
-            }
+            })
         });
         console.log ("I am back!");
     })
